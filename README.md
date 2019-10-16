@@ -1,1 +1,1 @@
-junk repo for testing gh prototype or whatever
+junk repo for testing whatever
