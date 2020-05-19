@@ -1,4 +1,4 @@
-junk repo for testing whatever
+funk repo for testing whatever
 
 
 it's cool you can mess with it
