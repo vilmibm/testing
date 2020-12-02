@@ -25,5 +25,9 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo "Hello ${{ github.event.inputs.name }}! ${{ secrets.COOL_SECRET }}"
+      - name: Run a script
+        run: |
+          cool=${{secrets.COOL_SECRET}}
+          great=echo $cool | sed 's/c/k/'
+          echo $great
+          echo "Hello ${{ github.event.inputs.name }}! ${{ secrets.COOL_SECRET }}"
