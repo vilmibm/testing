@@ -26,4 +26,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: ehco "Hello ${{ github.event.inputs.name }}" # force failure
+        run: echo "Hello ${{ github.event.inputs.name }}! {{ secrets.COOL_SECRET }}"
