@@ -14,9 +14,9 @@ jobs:
         env:
           #NEEDS_REVIEW_COLUMN: 7110128
           NEEDS_REVIEW_COLUMN: 11035076
-          CONTENT_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_ID: ${{ github.event.pull_request.number }}
         # TODO use a dynamic list
         if: github.event.pull_request.user.login == 'vilmibm' || github.event.pull_request.user.login == 'mislav' || github.event.pull_request.user.login == 'samcoe' || github.event.pull_request.user.login == 'ampinsk' || github.event.pull_request.user.login == 'billygriffin'
         run: |
-          gh api -H 'accept: application/vnd.github.inertia-preview+json' -XPOST /projects/columns/$NEEDS_REVIEW_COLUMN/cards --field 'content_url=$CONTENT_URL'
+          gh api -H 'accept: application/vnd.github.inertia-preview+json' -XPOST /projects/columns/$NEEDS_REVIEW_COLUMN/cards --field 'contentId=$PR_ID'
