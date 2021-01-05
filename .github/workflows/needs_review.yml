@@ -1,7 +1,8 @@
 name: PR Automation
 on:
   pull_request:
-    types: [ready_for_review]
+    # just ready_for_review doesn't cover created nondraft PRs :(  this is stupid.
+    types: [ready_for_review, opened]
 
 
 jobs:
@@ -11,8 +12,10 @@ jobs:
     steps:
       - name: Add to board
         env:
-          NEEDS_REVIEW_COLUMN: 7110128
+          #NEEDS_REVIEW_COLUMN: 7110128
+          NEEDS_REVIEW_COLUMN: 11035076
           CONTENT_URL: github.event.pull_request.html_url
+          GH_TOKEN: secrets.github_token
         # TODO use a dynamic list
         if: github.event.pull_request.user.login == 'vilmibm' || github.event.pull_request.user.login == 'mislav' || github.event.pull_request.user.login == 'samcoe' || github.event.pull_request.user.login == 'ampinsk' || github.event.pull_request.user.login == 'billygriffin'
         run: |
