@@ -19,4 +19,4 @@ jobs:
         # TODO use a dynamic list
         if: github.event.pull_request.user.login == 'vilmibm' || github.event.pull_request.user.login == 'mislav' || github.event.pull_request.user.login == 'samcoe' || github.event.pull_request.user.login == 'ampinsk' || github.event.pull_request.user.login == 'billygriffin'
         run: |
-          gh api graphql -f query="mutation { addProjectCard(input: { projectColumnId: '$NEEDS_REVIEW_COLUMN', contentId: '$PR_ID' }) { clientMutationId } }"
+          gh api graphql -f query="mutation { addProjectCard(input: { projectColumnId: \"$NEEDS_REVIEW_COLUMN\", contentId: \"$PR_ID\" }) { clientMutationId } }"
