@@ -1,0 +1,20 @@
+name: PR Automation
+#on:
+#  pull_request:
+#    # just ready_for_review doesn't cover created nondraft PRs :(  this is stupid.
+#    types: [ready_for_review, opened]
+on:
+  workflow_dispatch:
+    inputs:
+      cool:
+        description: a cool value
+        required: true
+
+
+jobs:
+  runAction:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: run action
+        uses: vilmibm/prauto@latest
