@@ -1,4 +1,4 @@
-name: PR Automation
+name: PR Automation with action
 #on:
 #  pull_request:
 #    # just ready_for_review doesn't cover created nondraft PRs :(  this is stupid.
