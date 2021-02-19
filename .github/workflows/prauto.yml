@@ -33,7 +33,7 @@ jobs:
           # I'd rather use REST here but I can't figure out how to just add a PR to a column; this invocation adds a card with an embedded pr which is different.
           #gh api -H 'Accept: application/vnd.github.inertia-preview+json' "projects/columns/${NEEDSREVIEWCOL}/cards" -fnote="${PRURL}"
           # this exec is an attempt to fix some quote highlighting issues i was having in my editor.
-          exec 'gh api graphql -f query="mutation { addProjectCard(input: { projectColumnId: \"$NEEDSREVIEWCOL\", contentId: \"$PRID\" }) { clientMutationId } }"'
+          bash 'gh api graphql -f query="mutation { addProjectCard(input: { projectColumnId: \"$NEEDSREVIEWCOL\", contentId: \"$PRID\" }) { clientMutationId } }"'
             exit 0
           fi
 
