@@ -15,13 +15,8 @@ jobs:
   bash-redux:
     runs-on: ubuntu-latest
     steps:
-    #      - name: run action
-    #        uses: vilmibm/prauto@latest
-    #        with:
-    #          cool: ${{ github.event.inputs.cool }}
-
       - name: bash version
-        with:
+        env:
           NEEDSREVIEWCOL: 7110128
           PRURL: ${{ github.event.pull_request.html_url }}
           STAFF: "vilmibm,mislav,samcoe,billygriffin,ampinsk"
@@ -30,7 +25,7 @@ jobs:
         run: |
           if cat $STAFF | grep $PRAUTHOR --quiet
           then
-            gh api "projects/columns/$NEEDSREVIEWCOL/cards -fnote="$PRURL"
+            gh api "projects/columns/$NEEDSREVIEWCOL/cards -fnote="${PRURL}"
             exit 0
           fi
 
