@@ -12,10 +12,9 @@ on:
     #        required: true
 
 jobs:
-  runAction:
+  bash-redux:
     runs-on: ubuntu-latest
-
-    #    steps:
+    steps:
     #      - name: run action
     #        uses: vilmibm/prauto@latest
     #        with:
