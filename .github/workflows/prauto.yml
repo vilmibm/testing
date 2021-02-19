@@ -25,7 +25,7 @@ jobs:
         run: |
           if cat $STAFF | grep $PRAUTHOR --quiet
           then
-            gh api "projects/columns/$NEEDSREVIEWCOL/cards -fnote="${PRURL}"
+            gh api "projects/columns/${NEEDSREVIEWCOL}/cards -fnote='${PRURL}'"
             exit 0
           fi
 
