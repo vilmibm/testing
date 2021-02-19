@@ -18,3 +18,5 @@ jobs:
     steps:
       - name: run action
         uses: vilmibm/prauto@latest
+        with:
+          cool: ${{ github.event.inputs.cool }}
