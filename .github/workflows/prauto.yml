@@ -17,28 +17,35 @@ jobs:
     steps:
       - name: bash version
         env:
-          NEEDSREVIEWCOL: 7110128
+          NEEDSREVIEWCOL: 7110128 # TODO update with cli/cli value
+          COMMUNITYPRBOARD: "TODO" # TODO update with cli org project value
           PRURL: ${{ github.event.pull_request.html_url }}
+          PRBODY: ${{ github.event.pull_request.body }}
           STAFF: "vilmibm,mislav,samcoe,billygriffin,ampinsk"
           PRAUTHOR: ${{ github.event.pull_request.user.login }}
+          PRNUM: ${{ github.event.pull_request.number }}
           TOKEN: ${{ github.token }}
         run: |
-          if cat $STAFF | grep $PRAUTHOR --quiet
+          if echo $STAFF | grep $PRAUTHOR
           then
             gh api "projects/columns/${NEEDSREVIEWCOL}/cards -fnote='${PRURL}'"
             exit 0
           fi
 
-          # if staff:
-          # - [ ] put on needs review, early exit
-          # else:
-          # close if:
-          # - [ ] pr body word count < 5
-          # - [ ] no changes to test files
-          # - [ ] no actual changes
-          # - [ ] no changes from pr author
-          # - [ ] not overriden by staff
-          # else:
+          if echo $PRBODY | wc -w | grep '^[0-9]$'
+          then
+            gh pr comment $PRNUM -b "Thanks for the PR! We're a small team and it's helpful to have context around community submissions in order to review them appropriately. Our automation has closed this PR since the body appears to be lacking much content; please add a more descriptive PR body as well as any issues it closes and reopen. Thanks again!"
+            gh pr close $PRNUM
+            exit 0
+          fi
+
+          # TODO pr body word count check
+          # TODO no test file changes
+          # TODO no changes from pr author
+          # TODO no issue mention
+          # TODO not overriden by staff
+
+          # TODO if we get this far, add to community pr board
           # - [ ] put on community PR board
 
 
