@@ -17,4 +17,4 @@ jobs:
 
     steps:
       - name: run action
-        uses: vilmibm/prauto@v1
+        uses: vilmibm/prauto@v2
