@@ -18,7 +18,8 @@ jobs:
       - name: bash version
         env:
           #NEEDSREVIEWCOL: 7110128 # this is the cli/cli needs review column
-          NEEDSREVIEWCOL: 11035076 # this is vilmibm/testing "good" column of the one project
+          #NEEDSREVIEWCOL: 11035076 # this is vilmibm/testing "good" column of the one project
+          NEEDSREVIEWCOL: "MDEzOlByb2plY3RDb2x1bW4xMTAzNTA3Ng==" # vilmibm/testing "good" column of the one project but in gql
           COMMUNITYPRBOARD: "TODO" # TODO update with cli org project value
           #PRURL: ${{ github.event.pull_request.html_url }}
           PRID: ${{ github.event.pull_request.node_id }}
