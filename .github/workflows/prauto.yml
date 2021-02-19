@@ -28,6 +28,8 @@ jobs:
           PRAUTHOR: ${{ github.event.pull_request.user.login }}
           PRNUM: ${{ github.event.pull_request.number }}
           GH_TOKEN: ${{ secrets.VILTOKEN }}
+          # REPO: "cli/cli"
+          REPO: "vilmibm/testing"
         run: |
           if echo $STAFF | grep $PRAUTHOR
           then
@@ -40,8 +42,8 @@ jobs:
 
           if echo $PRBODY | wc -w | grep '^[0-9]$'
           then
-            gh pr comment $PRNUM -b "Thanks for the PR! We're a small team and it's helpful to have context around community submissions in order to review them appropriately. Our automation has closed this PR since the body appears to be lacking much content; please add a more descriptive PR body as well as any issues it closes and reopen. Thanks again!"
-            gh pr close $PRNUM
+            gh -R$REPO pr comment $PRNUM -b "Thanks for the PR! We're a small team and it's helpful to have context around community submissions in order to review them appropriately. Our automation has closed this PR since the body appears to be lacking much content; please add a more descriptive PR body as well as any issues it closes and reopen. Thanks again!"
+            gh -R$REPO pr close $PRNUM
             exit 0
           fi
 
