@@ -20,6 +20,7 @@ jobs:
           NEEDSREVIEWCOL: 7110128 # TODO update with cli/cli value
           COMMUNITYPRBOARD: "TODO" # TODO update with cli org project value
           PRURL: ${{ github.event.pull_request.html_url }}
+          #PRID: ${{ github.event.pull_request.node_id }}
           PRBODY: ${{ github.event.pull_request.body }}
           STAFF: "vilmibm,mislav,samcoe,billygriffin,ampinsk"
           PRAUTHOR: ${{ github.event.pull_request.user.login }}
@@ -28,7 +29,8 @@ jobs:
         run: |
           if echo $STAFF | grep $PRAUTHOR
           then
-            gh api "projects/columns/${NEEDSREVIEWCOL}/cards" -fnote="${PRURL}"
+          gh api -H 'Accept: application/vnd.github.inertia-preview+json' "projects/columns/${NEEDSREVIEWCOL}/cards" -fnote="${PRURL}"
+          #gh api graphql -f query="mutation { addProjectCard(input: { projectColumnId: \"$NEEDSREVIEWCOL\", contentId: \"$PR_ID\" }) { clientMutationId } }"
             exit 0
           fi
 
