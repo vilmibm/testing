@@ -10,7 +10,6 @@ on:
         description: a cool value
         required: true
 
-
 jobs:
   runAction:
     runs-on: ubuntu-latest
@@ -20,3 +19,32 @@ jobs:
         uses: vilmibm/prauto@latest
         with:
           cool: ${{ github.event.inputs.cool }}
+
+      - name: bash version
+        with:
+          NEEDSREVIEWCOL: 7110128
+          PRURL: ${{ github.event.pull_request.html_url }}
+          STAFF: "vilmibm,mislav,samcoe,billygriffin,ampinsk"
+          PRAUTHOR: ${{ github.event.pull_request.user.login }}
+          TOKEN: ${{ github.token }}
+        run: |
+          if cat $STAFF | grep $PRAUTHOR --quiet
+          then
+            gh api "projects/columns/$NEEDSREVIEWCOL/cards -fnote="$PRURL"
+            exit 0
+          fi
+
+          # if staff:
+          # - [ ] put on needs review, early exit
+          # else:
+          # close if:
+          # - [ ] pr body word count < 5
+          # - [ ] no changes to test files
+          # - [ ] no actual changes
+          # - [ ] no changes from pr author
+          # - [ ] not overriden by staff
+          # else:
+          # - [ ] put on community PR board
+
+
+
