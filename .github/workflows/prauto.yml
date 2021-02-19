@@ -1,24 +1,25 @@
-name: PR Automation with action
-#on:
-#  pull_request:
-#    # just ready_for_review doesn't cover created nondraft PRs :(  this is stupid.
-#    types: [ready_for_review, opened]
+name: PR Automation bash redux
 on:
-  workflow_dispatch:
-    inputs:
-      cool:
-        description: a cool value
-        required: true
+  pull_request:
+    # just ready_for_review doesn't cover created nondraft PRs :(  this is stupid.
+    types: [ready_for_review, opened]
+
+    #on:
+    #  workflow_dispatch:
+    #    inputs:
+    #      cool:
+    #        description: a cool value
+    #        required: true
 
 jobs:
   runAction:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: run action
-        uses: vilmibm/prauto@latest
-        with:
-          cool: ${{ github.event.inputs.cool }}
+    #    steps:
+    #      - name: run action
+    #        uses: vilmibm/prauto@latest
+    #        with:
+    #          cool: ${{ github.event.inputs.cool }}
 
       - name: bash version
         with:
