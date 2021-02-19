@@ -20,8 +20,8 @@ jobs:
           #NEEDSREVIEWCOL: 7110128 # this is the cli/cli needs review column
           NEEDSREVIEWCOL: 11035076 # this is vilmibm/testing "good" column of the one project
           COMMUNITYPRBOARD: "TODO" # TODO update with cli org project value
-          PRURL: ${{ github.event.pull_request.html_url }}
-          #PRID: ${{ github.event.pull_request.node_id }}
+          #PRURL: ${{ github.event.pull_request.html_url }}
+          PRID: ${{ github.event.pull_request.node_id }}
           PRBODY: ${{ github.event.pull_request.body }}
           STAFF: "vilmibm,mislav,samcoe,billygriffin,ampinsk"
           PRAUTHOR: ${{ github.event.pull_request.user.login }}
@@ -30,8 +30,10 @@ jobs:
         run: |
           if echo $STAFF | grep $PRAUTHOR
           then
-          gh api -H 'Accept: application/vnd.github.inertia-preview+json' "projects/columns/${NEEDSREVIEWCOL}/cards" -fnote="${PRURL}"
-          #gh api graphql -f query="mutation { addProjectCard(input: { projectColumnId: \"$NEEDSREVIEWCOL\", contentId: \"$PR_ID\" }) { clientMutationId } }"
+          # I'd rather use REST here but I can't figure out how to just add a PR to a column; this invocation adds a card with an embedded pr which is different.
+          #gh api -H 'Accept: application/vnd.github.inertia-preview+json' "projects/columns/${NEEDSREVIEWCOL}/cards" -fnote="${PRURL}"
+          # this exec is an attempt to fix some quote highlighting issues i was having in my editor.
+          exec 'gh api graphql -f query="mutation { addProjectCard(input: { projectColumnId: \"$NEEDSREVIEWCOL\", contentId: \"$PRID\" }) { clientMutationId } }"'
             exit 0
           fi
 
