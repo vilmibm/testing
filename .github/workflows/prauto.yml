@@ -24,7 +24,7 @@ jobs:
           STAFF: "vilmibm,mislav,samcoe,billygriffin,ampinsk"
           PRAUTHOR: ${{ github.event.pull_request.user.login }}
           PRNUM: ${{ github.event.pull_request.number }}
-          TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           if echo $STAFF | grep $PRAUTHOR
           then
