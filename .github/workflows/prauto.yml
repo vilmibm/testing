@@ -2,7 +2,7 @@ name: PR Automation bash redux
 on:
   pull_request:
     # just ready_for_review doesn't cover created nondraft PRs :(  this is stupid.
-    types: [ready_for_review, opened]
+    types: [ready_for_review, opened, reopened]
 
     #on:
     #  workflow_dispatch:
@@ -47,10 +47,9 @@ jobs:
             exit 0
           fi
 
-          # TODO pr body word count check
-          # TODO no test file changes
-          # TODO no changes from pr author
           # TODO no issue mention
+          # TODO no changes from pr author
+          # TODO no test file changes -- maybe just a comment warning about it?
           # TODO not overriden by staff
 
           # TODO if we get this far, add to community pr board
