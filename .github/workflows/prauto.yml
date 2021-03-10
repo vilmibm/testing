@@ -15,7 +15,9 @@ jobs:
   bash-redux:
     runs-on: ubuntu-latest
     steps:
-      - name: bash version
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: lint pr
         env:
           #NEEDSREVIEWCOL: 7110128 # this is the cli/cli needs review column
           #NEEDSREVIEWCOL: 11035076 # this is vilmibm/testing "good" column of the one project
@@ -27,33 +29,72 @@ jobs:
           STAFF: "vilmibm,mislav,samcoe,billygriffin,ampinsk"
           PRAUTHOR: ${{ github.event.pull_request.user.login }}
           PRNUM: ${{ github.event.pull_request.number }}
+          PRBASE: ${{ github.event.pull_request.base.ref }}
+          PRHEAD: ${{ github.event.pull_request.head.ref }}
           GH_TOKEN: ${{ secrets.VILTOKEN }}
           # REPO: "cli/cli"
           REPO: "vilmibm/testing"
         run: |
+          commentPR () {
+            gh -R$REPO pr comment $PRNUM -b "${1}"
+          }
+
+          closePR () {
+            gh -R$REPO pr close $PRNUM
+          }
+
+          addToBoard () {
+            # I'd rather use REST here but I can't figure out how to just add a PR to a column; this invocation adds a card with an embedded pr which is different.
+            #gh api -H 'Accept: application/vnd.github.inertia-preview+json' "projects/columns/${NEEDSREVIEWCOL}/cards" -fnote="${PRURL}"
+            # this exec is an attempt to fix some quote highlighting issues i was having in my editor.
+            bash -c 'gh api graphql -f query="mutation { addProjectCard(input: { projectColumnId: \"$NEEDSREVIEWCOL\", contentId: \"$PRID\" }) { clientMutationId } }"'
+          }
+
           if echo $STAFF | grep $PRAUTHOR
           then
-          # I'd rather use REST here but I can't figure out how to just add a PR to a column; this invocation adds a card with an embedded pr which is different.
-          #gh api -H 'Accept: application/vnd.github.inertia-preview+json' "projects/columns/${NEEDSREVIEWCOL}/cards" -fnote="${PRURL}"
-          # this exec is an attempt to fix some quote highlighting issues i was having in my editor.
-          bash -c 'gh api graphql -f query="mutation { addProjectCard(input: { projectColumnId: \"$NEEDSREVIEWCOL\", contentId: \"$PRID\" }) { clientMutationId } }"'
+            addToBoard
             exit 0
           fi
 
           if echo $PRBODY | wc -w | grep '^[0-9]$'
           then
-            gh -R$REPO pr comment $PRNUM -b "Thanks for the PR! We're a small team and it's helpful to have context around community submissions in order to review them appropriately. Our automation has closed this PR since the body appears to be lacking much content; please add a more descriptive PR body as well as any issues it closes and reopen. Thanks again!"
-            gh -R$REPO pr close $PRNUM
+            commentPR "Thanks for the PR! We're a small team and it's helpful to have context around community submissions in order to review them appropriately. Our automation has closed this PR since the body appears to be lacking much content; please add a more descriptive PR body as well as any issues it closes and reopen. Thanks again!"
+            closePR
             exit 0
           fi
 
-          # TODO no issue mention
-          # TODO no changes from pr author
-          # TODO no test file changes -- maybe just a comment warning about it?
-          # TODO not overriden by staff
+          if echo $PRBASE | grep -Ev "^trunk$"
+          then
+            commentPR "This pull request should probably be targeting trunk; since it isn't, our automation has closed it. Please reopen with an appropriate base branch if this was in error."
+            closePR
+            exit 0
+          fi
 
-          # TODO if we get this far, add to community pr board
-          # - [ ] put on community PR board
+          # this catches a kind of spammy PR that merges some arbitrary
+          # existing branch into a new branch and opens a PR with no original
+          # actual commits from the opener.
+          git fetch origin pull/$PRNUM/head:pr-branch
+
+          # TODO TODO TODO this is broken
+          #
+          # PRAUTHOR is a login; it won't appear. How can I actually get the email or name of the author? I don't see it in the payload at all.
+          if git log --no-merges trunk..pr-branch | grep -v $PRAUTHOR
+          then
+            commentPR "This pull request does not appear to have any original commits in it, so our automation has closed it. Please fix the head and base branches as needed and reopen if this was in error."
+            closePR
+            exit 0
+          fi
+
+          if echo $PRBODY | grep -Ev " \#\d+ "
+          then
+            commentPR "Hi! Thanks for the PR. Please ensure that this PR is related to an issue by mentioning its issue number in the PR body. If this PR would close the issue, please put 'Fixes #<issue number>' somewhere in the PR body. If this is a tiny change like fixing a typo, feel free to ignore this message."
+            # TODO should this be close-worthy? I feel like sometimes it's ok to not have an issue (like a tiny typo fix) so we should have this be a warning.
+            exit 0
+          fi
+
+          # TODO if we get this far, add to project board
+          addToBoard
+          exit 0
 
 
 
