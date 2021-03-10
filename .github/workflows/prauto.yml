@@ -98,7 +98,6 @@ jobs:
           then
             commentPR "Hi! Thanks for the PR. Please ensure that this PR is related to an issue by mentioning its issue number in the PR body. If this PR would close the issue, please put 'Fixes #<issue number>' somewhere in the PR body. If this is a tiny change like fixing a typo, feel free to ignore this message."
             # TODO should this be close-worthy? I feel like sometimes it's ok to not have an issue (like a tiny typo fix) so we should have this be a warning.
-            exit 0
           fi
 
           addToBoard
