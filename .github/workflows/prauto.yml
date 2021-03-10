@@ -15,15 +15,15 @@ jobs:
   bash-redux:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
+      # this will only be needed if we reinstate the "no commits from author" check
+      #- name: checkout
+      #  uses: actions/checkout@v2
       - name: lint pr
         env:
           #NEEDSREVIEWCOL: 7110128 # this is the cli/cli needs review column
           #NEEDSREVIEWCOL: 11035076 # this is vilmibm/testing "good" column of the one project
           NEEDSREVIEWCOL: "MDEzOlByb2plY3RDb2x1bW4xMTAzNTA3Ng==" # vilmibm/testing "good" column of the one project but in gql
           COMMUNITYPRBOARD: "TODO" # TODO update with cli org project value
-          #PRURL: ${{ github.event.pull_request.html_url }}
           PRID: ${{ github.event.pull_request.node_id }}
           PRBODY: ${{ github.event.pull_request.body }}
           STAFF: "vilmibm,mislav,samcoe,billygriffin,ampinsk"
@@ -32,7 +32,7 @@ jobs:
           PRBASE: ${{ github.event.pull_request.base.ref }}
           PRHEAD: ${{ github.event.pull_request.head.ref }}
           GH_TOKEN: ${{ secrets.VILTOKEN }}
-          # REPO: "cli/cli"
+          # REPO: "cli/cli" # TODO switch when this is ready
           REPO: "vilmibm/testing"
         run: |
           commentPR () {
@@ -44,8 +44,6 @@ jobs:
           }
 
           addToBoard () {
-            # I'd rather use REST here but I can't figure out how to just add a PR to a column; this invocation adds a card with an embedded pr which is different.
-            #gh api -H 'Accept: application/vnd.github.inertia-preview+json' "projects/columns/${NEEDSREVIEWCOL}/cards" -fnote="${PRURL}"
             # this exec is an attempt to fix some quote highlighting issues i was having in my editor.
             bash -c 'gh api graphql -f query="mutation { addProjectCard(input: { projectColumnId: \"$NEEDSREVIEWCOL\", contentId: \"$PRID\" }) { clientMutationId } }"'
           }
@@ -70,20 +68,31 @@ jobs:
             exit 0
           fi
 
+          # TODO I've put this check on hold because it was more complicated
+          # than expected and I noticed that all of our spammy PRs of this form
+          # lack a description--I want to see how much spam we curtail just
+          # with the empty body rejection before investing more time in this
+          # check.
+
           # this catches a kind of spammy PR that merges some arbitrary
           # existing branch into a new branch and opens a PR with no original
           # actual commits from the opener.
-          git fetch origin pull/$PRNUM/head:pr-branch
+          #git fetch origin pull/$PRNUM/head:pr-branch
 
-          # TODO TODO TODO this is broken
-          #
+          # So now I have a list of "real" commits on the pr branch. I can't
+          # conclude if PRAUTHOR is on any of them, though, because they don't
+          # have GH login on them. I can get the PR commits via the API. so I
+          # think I need to get the PR commits from the API, grab the SHAs that
+          # match AUTHOR, then see if there is overlap between what I got from
+          # git log and what I got from the API.
+
           # PRAUTHOR is a login; it won't appear. How can I actually get the email or name of the author? I don't see it in the payload at all.
-          if git log --no-merges trunk..pr-branch | grep -v $PRAUTHOR
-          then
-            commentPR "This pull request does not appear to have any original commits in it, so our automation has closed it. Please fix the head and base branches as needed and reopen if this was in error."
-            closePR
-            exit 0
-          fi
+          #if git log --no-merges trunk..pr-branch | grep -v $PRAUTHOR
+          #then
+          #  commentPR "This pull request does not appear to have any original commits in it, so our automation has closed it. Please fix the head and base branches as needed and reopen if this was in error."
+          #  closePR
+          #  exit 0
+          #fi
 
           if echo $PRBODY | grep -Ev " \#\d+ "
           then
@@ -92,7 +101,6 @@ jobs:
             exit 0
           fi
 
-          # TODO if we get this far, add to project board
           addToBoard
           exit 0
 
