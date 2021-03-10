@@ -1,16 +1,7 @@
-name: PR Automation bash redux
+name: PR Automation
 on:
   pull_request:
-    # just ready_for_review doesn't cover created nondraft PRs :(  this is stupid.
     types: [ready_for_review, opened, reopened]
-
-    #on:
-    #  workflow_dispatch:
-    #    inputs:
-    #      cool:
-    #        description: a cool value
-    #        required: true
-
 jobs:
   bash-redux:
     runs-on: ubuntu-latest
@@ -20,8 +11,6 @@ jobs:
       #  uses: actions/checkout@v2
       - name: lint pr
         env:
-          #NEEDSREVIEWCOL: 7110128 # this is the cli/cli needs review column
-          #NEEDSREVIEWCOL: 11035076 # this is vilmibm/testing "good" column of the one project
           NEEDSREVIEWCOL: "MDEzOlByb2plY3RDb2x1bW4xMTAzNTA3Ng==" # vilmibm/testing "good" column of the one project but in gql
           COMMUNITYPRBOARD: "TODO" # TODO update with cli org project value
           PRID: ${{ github.event.pull_request.node_id }}
@@ -97,11 +86,10 @@ jobs:
           if echo $PRBODY | grep -Ev " \#\d+ "
           then
             commentPR "Hi! Thanks for the PR. Please ensure that this PR is related to an issue by mentioning its issue number in the PR body. If this PR would close the issue, please put 'Fixes #<issue number>' somewhere in the PR body. If this is a tiny change like fixing a typo, feel free to ignore this message."
-            # TODO should this be close-worthy? I feel like sometimes it's ok to not have an issue (like a tiny typo fix) so we should have this be a warning.
+            # TODO should this be close-worthy? I feel like sometimes it's ok
+            # to not have an issue (like a tiny typo fix) so we should have
+            # this be a warning.
           fi
 
           addToBoard
           exit 0
-
-
-
