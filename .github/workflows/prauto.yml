@@ -3,26 +3,22 @@ on:
   pull_request:
     types: [ready_for_review, opened, reopened]
 jobs:
-  bash-redux:
+  pr-auto:
     runs-on: ubuntu-latest
     steps:
-      # this will only be needed if we reinstate the "no commits from author" check
-      #- name: checkout
-      #  uses: actions/checkout@v2
       - name: lint pr
         env:
-          NEEDSREVIEWCOL: "MDEzOlByb2plY3RDb2x1bW4xMTAzNTA3Ng==" # vilmibm/testing "good" column of the one project but in gql
-          COMMUNITYPRBOARD: "TODO" # TODO update with cli org project value
+          #REPO: "cli/cli"
+          #NEEDSREVIEWCOL: "MDEzOlByb2plY3RDb2x1bW43MTEwMTI4"
           PRID: ${{ github.event.pull_request.node_id }}
           PRBODY: ${{ github.event.pull_request.body }}
           STAFF: "vilmibm,mislav,samcoe,billygriffin,ampinsk"
-          PRAUTHOR: ${{ github.event.pull_request.user.login }}
           PRNUM: ${{ github.event.pull_request.number }}
           PRBASE: ${{ github.event.pull_request.base.ref }}
-          PRHEAD: ${{ github.event.pull_request.head.ref }}
           GH_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
-          # REPO: "cli/cli" # TODO switch when this is ready
+          # Testing data:
           REPO: "vilmibm/testing"
+          NEEDSREVIEWCOL: "MDEzOlByb2plY3RDb2x1bW4xMTAzNTA3Ng==" # vilmibm/testing "good" column
         run: |
           commentPR () {
             gh -R$REPO pr comment $PRNUM -b "${1}"
@@ -43,49 +39,23 @@ jobs:
             exit 0
           fi
 
-          if echo $PRBODY | wc -w | grep '^[0-9]$'
+          if echo "${PRBODY}" | wc -w | grep -E '^[0-9]$'
           then
             commentPR "Thanks for the PR! We're a small team and it's helpful to have context around community submissions in order to review them appropriately. Our automation has closed this PR since the body appears to be lacking much content; please add a more descriptive PR body as well as any issues it closes and reopen. Thanks again!"
             closePR
             exit 0
           fi
 
-          if echo $PRBASE | grep -Ev "^trunk$"
+          if echo "${PRBASE}" | grep -Ev "^trunk$"
           then
             commentPR "This pull request should probably be targeting trunk; since it isn't, our automation has closed it. Please reopen with an appropriate base branch if this was in error."
             closePR
             exit 0
           fi
 
-          # TODO I've put this check on hold because it was more complicated
-          # than expected and I noticed that all of our spammy PRs of this form
-          # lack a description--I want to see how much spam we curtail just
-          # with the empty body rejection before investing more time in this
-          # check.
-
-          # this catches a kind of spammy PR that merges some arbitrary
-          # existing branch into a new branch and opens a PR with no original
-          # actual commits from the opener.
-          #git fetch origin pull/$PRNUM/head:pr-branch
-
-          # So now I have a list of "real" commits on the pr branch. I can't
-          # conclude if PRAUTHOR is on any of them, though, because they don't
-          # have GH login on them. I can get the PR commits via the API. so I
-          # think I need to get the PR commits from the API, grab the SHAs that
-          # match AUTHOR, then see if there is overlap between what I got from
-          # git log and what I got from the API.
-
-          # PRAUTHOR is a login; it won't appear. How can I actually get the email or name of the author? I don't see it in the payload at all.
-          #if git log --no-merges trunk..pr-branch | grep -v $PRAUTHOR
-          #then
-          #  commentPR "This pull request does not appear to have any original commits in it, so our automation has closed it. Please fix the head and base branches as needed and reopen if this was in error."
-          #  closePR
-          #  exit 0
-          #fi
-
-          if echo $PRBODY | grep -Ev " \#\d+ "
+          if echo "${PRBODY}" | grep -Ev " \#\d+ "
           then
-            commentPR "Hi! Thanks for the PR. Please ensure that this PR is related to an issue by mentioning its issue number in the PR body. If this PR would close the issue, please put 'Fixes #<issue number>' somewhere in the PR body. If this is a tiny change like fixing a typo, feel free to ignore this message."
+            commentPR "Hi! Thanks for the PR. Please ensure that this PR is related to an issue by mentioning its issue number in the PR body. If this PR would close the issue, please put the word 'Fixes' before the issue number somewhere in the PR body. If this is a tiny change like fixing a typo, feel free to ignore this message."
             # TODO should this be close-worthy? I feel like sometimes it's ok
             # to not have an issue (like a tiny typo fix) so we should have
             # this be a warning.
