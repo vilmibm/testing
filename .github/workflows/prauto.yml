@@ -31,7 +31,7 @@ jobs:
           PRNUM: ${{ github.event.pull_request.number }}
           PRBASE: ${{ github.event.pull_request.base.ref }}
           PRHEAD: ${{ github.event.pull_request.head.ref }}
-          GH_TOKEN: ${{ secrets.VILTOKEN }}
+          GH_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
           # REPO: "cli/cli" # TODO switch when this is ready
           REPO: "vilmibm/testing"
         run: |
