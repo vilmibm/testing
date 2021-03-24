@@ -4,17 +4,20 @@ name: dupe blank
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the trunk branch
+#on:
+#  workflow_dispatch:
+#    inputs:
+#      val:
+#        description: 'a value'
+#        required: true
+#        default: 'there'
+#      anotherVal:
+#        description: 'another value'
+#        required: true
+#        default: 'well'
 on:
-  workflow_dispatch:
-    inputs:
-      val:
-        description: 'a value'
-        required: true
-        default: 'there'
-      anotherVal:
-        description: 'another value'
-        required: true
-        default: 'well'
+  pull_request:
+    types: [ready_for_review, opened, reopened]
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
