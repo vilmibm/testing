@@ -1,16 +1,21 @@
 # This is a basic workflow to help you get started with Actions
 
-name: hey
+name: dupe blank
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the trunk branch
 on:
   workflow_dispatch:
     inputs:
-      name:
-        description: 'a name'
+      val:
+        description: 'a value'
         required: true
         default: 'there'
+      anotherVal:
+        description: 'another value'
+        required: true
+        default: 'well'
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,5 +32,4 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a script
         run: |
-          echo ${{secrets.COOL_SECRET}} | sed 's/c/k/'
-          echo "Hello ${{ github.event.inputs.name }}! ${{ secrets.COOL_SECRET }}"
+          echo "HI"
