@@ -7,10 +7,12 @@ name: manual
 on:
   workflow_dispatch:
     inputs:
+      greeting:
+        description: 'a greeting'
+        default: 'hi'
       name:
         description: 'a name'
         required: true
-        default: 'there'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
