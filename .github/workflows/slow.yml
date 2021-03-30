@@ -1,0 +1,40 @@
+name: sleepy workflow
+on:
+  workflow_dispatch:
+    inputs:
+      sleepy:
+        required: true
+        description: "how sleepy the steps should be"
+
+jobs:
+  fast job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: foo the bar
+        run: |
+          echo "fooing the bar"
+      - name: quux the baz
+        run: |
+          echo "quuxing the baz"
+      - name: fjord the flop
+        run: |
+          echo "fjording the flop"
+  sleepy job:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: run some bash
+        run: |
+          echo "so sleepy"
+          sleep ${{ github.events.inputs.sleepy }}
+      - name: run some more bash
+        run: |
+          echo "eyelids drooping"
+          sleep ${{ github.events.inputs.sleepy }}
+      - name: even more bash
+        run: |
+          echo "so cozy"
+          sleep ${{ github.events.inputs.sleepy }}
+
