@@ -7,7 +7,7 @@ on:
         description: "how sleepy the steps should be"
 
 jobs:
-  fast job:
+  fast-job:
     runs-on: ubuntu-latest
     steps:
       - name: foo the bar
@@ -19,7 +19,10 @@ jobs:
       - name: fjord the flop
         run: |
           echo "fjording the flop"
-  sleepy job:
+      - name: blaz the blorz
+        run: |
+          echo "blazing the blorz"
+  sleepy-job:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -36,5 +39,9 @@ jobs:
       - name: even more bash
         run: |
           echo "so cozy"
+          sleep ${{ github.events.inputs.sleepy }}
+      - name: even more bash
+        run: |
+          echo "lots of blankets"
           sleep ${{ github.events.inputs.sleepy }}
 
