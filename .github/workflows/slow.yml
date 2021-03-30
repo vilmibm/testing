@@ -28,17 +28,17 @@ jobs:
       - name: run some bash
         run: |
           echo "so sleepy"
-          sleep ${{ github.events.inputs.sleepy }}
+          sleep ${{ github.event.inputs.sleepy }}
       - name: run some more bash
         run: |
           echo "eyelids drooping"
-          sleep ${{ github.events.inputs.sleepy }}
+          sleep ${{ github.event.inputs.sleepy }}
       - name: even more bash
         run: |
           echo "so cozy"
-          sleep ${{ github.events.inputs.sleepy }}
+          sleep ${{ github.event.inputs.sleepy }}
       - name: even more bash
         run: |
           echo "lots of blankets"
-          sleep ${{ github.events.inputs.sleepy }}
+          sleep ${{ github.event.inputs.sleepy }}
 
