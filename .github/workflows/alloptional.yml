@@ -1,0 +1,44 @@
+name: sleepy workflow
+on:
+  workflow_dispatch:
+    inputs:
+      sleepy:
+        description: "how sleepy the steps should be"
+        default: 1s
+
+jobs:
+  fast-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: foo the bar
+        run: |
+          echo "fooing the bar"
+      - name: quux the baz
+        run: |
+          echo "quuxing the baz"
+      - name: fjord the flop
+        run: |
+          echo "fjording the flop"
+      - name: blaz the blorz
+        run: |
+          echo "blazing the blorz"
+  sleepy-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: run some bash
+        run: |
+          echo "so sleepy"
+          sleep ${{ github.event.inputs.sleepy }}
+      - name: run some more bash
+        run: |
+          echo "eyelids drooping"
+          sleep ${{ github.event.inputs.sleepy }}
+      - name: even more bash
+        run: |
+          echo "so cozy"
+          sleep ${{ github.event.inputs.sleepy }}
+      - name: even more bash
+        run: |
+          echo "lots of blankets"
+          sleep ${{ github.event.inputs.sleepy }}
+
