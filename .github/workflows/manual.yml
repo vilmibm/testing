@@ -17,7 +17,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  greet:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -27,7 +27,6 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: Run a script
+      - name: do a greet
         run: |
-          echo ${{secrets.COOL_SECRET}} | sed 's/c/k/'
-          echo "Hello ${{ github.event.inputs.name }}! ${{ secrets.COOL_SECRET }}"
+          echo "${{github.event.inputs.greeting}}, ${{github.event.inputs.name}}!"
