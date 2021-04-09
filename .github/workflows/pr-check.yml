@@ -21,19 +21,26 @@ jobs:
           PRBODY: ${{ github.event.inputs.pull_request_body }}
           TEST: "true"
         run: |
+          echo "HI"
           commentPR () {
             if [ "$TEST" = "true" ]
             then
+              echo "THERE"
               echo "gh pr comment $PRNUM -b '${1}'"
             else
               gh pr comment $PRNUM -b "${1}"
             fi
           }
 
+          echo "HOW"
+
           if [ "$PRBODY" = "" ]
           then
+            echo "ARE"
             commentPR "Thanks for the PR! Please add a body so we can better review."
           fi
+
+          echo "YOU"
 
 
 
