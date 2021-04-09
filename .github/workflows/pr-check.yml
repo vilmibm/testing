@@ -1,0 +1,39 @@
+name: Pull Request Check
+# We'll use this when we're ready to ship
+# on: pull_request
+on:
+  workflow_dispatch:
+    inputs:
+      pull_request_body:
+        default: ""
+      pull_request_number:
+        default: "123"
+
+jobs:
+  check-body-length:
+    steps:
+      - name: check
+        env:
+          #PRNUM: ${{ github.event.pull_request.number }}
+          #PRBODY: ${{ github.event.pull_request.body }}
+          PRNUM: ${{ github.event.inputs.pull_request_number }}
+          PRBODY: ${{ github.event.inputs.pull_request_body }}
+          TEST: "true"
+        run: |
+          commentPR () {
+            if [ "$TEST" = "true" ]
+            then
+              echo "gh pr comment $PRNUM -b '${1}'"
+            else
+              gh pr comment $PRNUM -b "${1}"
+            fi
+          }
+
+          if [ "$PRBODY" = "" ]
+          then
+            commentPR "Thanks for the PR! Please add a body so we can better review."
+          fi
+
+
+
+
