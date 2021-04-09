@@ -13,6 +13,10 @@ on:
       name:
         description: 'a name'
         required: true
+      number:
+        description: 'a number'
+        default: 2
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -29,4 +33,4 @@ jobs:
       # Runs a single command using the runners shell
       - name: do a greet
         run: |
-          echo "${{github.event.inputs.greeting}}, ${{github.event.inputs.name}}!"
+          echo "${{ github.event.inputs.number}} ${{github.event.inputs.greeting}}, ${{github.event.inputs.name}}!"
