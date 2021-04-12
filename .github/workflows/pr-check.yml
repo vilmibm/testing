@@ -23,6 +23,12 @@ jobs:
           TESTNUM: ${{ github.events.inputs.number }}
           TEST: ${{ github.event.inputs.test }}
         run: |
+          if [ "$TEST" = "true" ]
+          then
+            PRBODY=$TESTBODY
+            PRNUM=$TESTNUM
+          fi
+
           commentPR () {
             if [ "$TEST" = "true" ]
             then
@@ -31,12 +37,6 @@ jobs:
               gh pr comment $PRNUM -b "${1}"
             fi
           }
-
-          if [ "$TEST" = "true" ]
-          then
-            PRBODY=$TESTBODY
-            PRNUM=$TESTNUM
-          fi
 
           if [ "$PRBODY" = "" ]
           then
