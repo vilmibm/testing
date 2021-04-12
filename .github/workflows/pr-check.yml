@@ -29,6 +29,9 @@ jobs:
             PRNUM=$TESTNUM
           fi
 
+          echo $PRBODY
+          echo $PRNUM
+
           commentPR () {
             if [ "$TEST" = "true" ]
             then
