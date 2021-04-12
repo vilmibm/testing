@@ -19,6 +19,7 @@ jobs:
           PRBODY: ${{ github.event.pull_request.body }}
           TESTBODY: ${{ github.event.inputs.body }}
           TEST: ${{ github.event.inputs.test }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ "$TEST" = "true" ]
           then
