@@ -1,15 +1,15 @@
 name: Pull Request Check
-# We'll use this when we're ready to ship
-# on: pull_request
-#on:
-#  workflow_dispatch:
-#    inputs:
-#      pull_request_body:
-#        default: ""
-#      pull_request_number:
-#        default: "123"
 
-on: [workflow_dispatch, pull_request]
+on:
+  workflow_dispatch:
+    inputs:
+      body:
+        default: ""
+      test:
+        default: "false"
+      number:
+        default: "123"
+  pull_request_target:
 
 jobs:
   check-body-length:
@@ -17,13 +17,11 @@ jobs:
     steps:
       - name: check
         env:
-          #PRNUM: ${{ github.event.pull_request.number }}
-          #PRBODY: ${{ github.event.pull_request.body }}
-          #PRNUM: ${{ github.event.inputs.pull_request_number }}
-          #PRBODY: ${{ github.event.inputs.pull_request_body }}
-          PRNUM: 123
-          PRBODY: howdy
-          TEST: "true"
+          PRNUM: ${{ github.event.pull_request.number }}
+          PRBODY: ${{ github.event.pull_request.body }}
+          TESTBODY: ${{ github.event.inputs.body }}
+          TESTNUM: ${{ github.events.inputs.number }}
+          TEST: ${{ github.event.inputs.test }}
         run: |
           commentPR () {
             if [ "$TEST" = "true" ]
@@ -33,6 +31,12 @@ jobs:
               gh pr comment $PRNUM -b "${1}"
             fi
           }
+
+          if [ "$TEST" = "true" ]
+          then
+            PRBODY=$TESTBODY
+            PRNUM=$TESTNUM
+          fi
 
           if [ "$PRBODY" = "" ]
           then
