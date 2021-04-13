@@ -4,7 +4,7 @@ on:
     inputs:
       sleepy:
         required: true
-        description: "how sleepy the steps should be"
+        description: "how many seconds each step should sleep for"
 jobs:
   fast-job:
     runs-on: ubuntu-latest
