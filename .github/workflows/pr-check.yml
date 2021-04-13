@@ -38,4 +38,4 @@ jobs:
           if [ "$PRBODY" = "" ]
           then
             commentPR "Thanks! Please add a body so we can better review your contribution."
-          fi
+          fi 
