@@ -1,5 +1,4 @@
 # intentionally slow job to use in demonstrating run watch
-# useless comment
 name: sleepy workflow
 on:
   workflow_dispatch:
