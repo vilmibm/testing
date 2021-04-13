@@ -1,26 +1,28 @@
 # This is a basic workflow to help you get started with Actions
 
-name: manual
+name: failing step
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the trunk branch
-on:
-  workflow_dispatch:
+on: workflow_dispatch
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  greet:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
       # Runs a single command using the runners shell
-      - name: Run a script
+      - name: an echo
+        run: echo "echo"
+      - name: echo again
+        run: echo "again"
+      - name: "a failing step"
         run: |
-          echo ${{secrets.COOL_SECRET}} | sed 's/c/k/'
-          echo "Hello ${{ github.event.inputs.name }}! ${{ secrets.COOL_SECRET }}"
+          echo "oh no."
+          exit 1
+      - name: "one last time"
+        run: echo "hey"

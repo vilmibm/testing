@@ -22,5 +22,12 @@ jobs:
     steps:
       # Runs a single command using the runners shell
       - name: do a greet
+        run: echo "hi"
+      - name: echo again
+        run: echo "again"
+      - name: "even more echo"
         run: |
-          echo "hi"
+          echo "yeah"
+          exit 1
+      - name: "one last time"
+        run: echo "hey"
