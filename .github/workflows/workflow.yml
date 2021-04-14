@@ -1,0 +1,27 @@
+# intentionally slow job to use in demonstrating run watch
+# useless comment
+name: GitHub CLI + Actions
+on: workflow_dispatch
+jobs:
+  gh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: text is cool
+        run: sleep 1
+      - name: terminals are fun
+        run: sleep 1
+      - name: rainbows
+        run: sleep 1
+      - name: sparkles
+        run: sleep 1
+  actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: sample
+        run: sleep 1
+      - name: sample
+        run: sleep 1
+      - name: sample
+        run: sleep 1
+      - name: sample
+        run: sleep 1
