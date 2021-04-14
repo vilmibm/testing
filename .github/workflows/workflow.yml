@@ -3,25 +3,18 @@
 name: GitHub CLI + Actions
 on: workflow_dispatch
 jobs:
-  gh:
+  gh-can-now:
     runs-on: ubuntu-latest
     steps:
-      - name: text is cool
+      - name: List your workflows and runs
         run: sleep 1
-      - name: terminals are fun
+      - name: View run logs and artifacts
         run: sleep 1
-      - name: rainbows
+      - name: Rerun failed runs
         run: sleep 1
-      - name: sparkles
+      - name: Trigger workflow runs
         run: sleep 1
-  actions:
-    runs-on: ubuntu-latest
-    steps:
-      - name: sample
+      - name: Enable and disable workflows
         run: sleep 1
-      - name: sample
-        run: sleep 1
-      - name: sample
-        run: sleep 1
-      - name: sample
+      - name: Watch runs execute (whoa, meta)
         run: sleep 1
