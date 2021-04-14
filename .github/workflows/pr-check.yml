@@ -35,7 +35,6 @@ jobs:
             fi
           }
 
-          if [ "$PRBODY" = "" ]
           if [ $(wc -c <<<$PRBODY) -lt 10 ]
           then
             commentPR "Thanks! Please add content to the  body so we can better review your contribution."
