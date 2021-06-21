@@ -1,0 +1,18 @@
+name: get daily poem
+on: workflow_dispatch
+jobs:
+  get-poem:
+    runs-on: ubuntu-latest
+    steps:
+      - name: run script
+        run: |
+          gh repo clone vilmibm/vilmibm
+          tail vilmibm/README.md -n17 > poem.txt
+      - name: do upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: daily-poem
+          path: poem.txt
+          retention-days: 1
+
+

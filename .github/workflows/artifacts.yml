@@ -1,0 +1,23 @@
+name: artifacts
+on: workflow_dispatch
+jobs:
+  make-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: generate files
+        run: |
+          echo "risc will change everything!" > file0.txt
+          echo "yeahhh" > file1.txt
+      - name: upload file
+        uses: actions/upload-artifact@v2
+        with:
+          name: da-vinci-virus
+          path: file0.txt
+          retention-days: 30
+      - name: upload second file
+        uses: actions/upload-artifact@v2
+        with:
+          name: tps-report
+          path: file1.txt
+          retention-days: 30
+    

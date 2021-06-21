@@ -1,0 +1,20 @@
+# intentionally slow job to use in demonstrating run watch
+# useless comment
+name: GitHub CLI + Actions
+on: workflow_dispatch
+jobs:
+  gh-can-now:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List your workflows and runs
+        run: sleep 1
+      - name: View run logs and artifacts
+        run: sleep 1
+      - name: Rerun failed runs
+        run: sleep 1
+      - name: Trigger workflow runs
+        run: sleep 1
+      - name: Enable and disable workflows
+        run: sleep 1
+      - name: Watch runs execute (whoa, meta)
+        run: sleep 1

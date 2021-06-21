@@ -1,0 +1,18 @@
+name: greet someone
+on:
+  workflow_dispatch:
+    inputs:
+      greeting:
+        description: 'a greeting'
+        default: 'hi'
+      name:
+        description: 'a name'
+        required: true
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: do a greet
+        run: |
+          echo "${{github.event.inputs.greeting}}, ${{github.event.inputs.name}}!"
