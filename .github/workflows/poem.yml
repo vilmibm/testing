@@ -8,6 +8,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.VILTOKEN }}
         run: |
+          exit 1
           gh repo clone vilmibm/vilmibm
           tail vilmibm/README.md -n17 > poem.txt
       - name: do upload
