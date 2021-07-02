@@ -4,9 +4,12 @@ jobs:
   get-poem:
     runs-on: ubuntu-latest
     steps:
-      - name: run script
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          repository: vilmibm/vilmibm
+      - name: grab poem
         run: |
-          gh repo clone vilmibm/vilmibm
           tail vilmibm/README.md -n17 > poem.txt
       - name: do upload
         uses: actions/upload-artifact@v2
