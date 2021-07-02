@@ -6,7 +6,7 @@ jobs:
     steps:
       - name: grab poem
         env:
-          GH_TOKEN: &{{ secrets.VILTOKEN }}
+          GH_TOKEN: ${{ secrets.VILTOKEN }}
         run: |
           gh repo clone vilmibm/vilmibm
           tail vilmibm/README.md -n17 > poem.txt
@@ -16,5 +16,3 @@ jobs:
           name: daily-poem
           path: poem.txt
           retention-days: 1
-
-
