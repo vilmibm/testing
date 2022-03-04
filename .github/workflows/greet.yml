@@ -8,6 +8,10 @@ on:
       name:
         description: 'a name'
         required: true
+      cool:
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   greet:
