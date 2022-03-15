@@ -19,4 +19,5 @@ jobs:
     steps:
       - name: do a greet
         run: |
-          echo "${{github.event.inputs.greeting}}, ${{github.event.inputs.name}}!"
+          echo "${{github.event.inputs.greeting}}, ${{github.event.inputs.name}}!" && exit 1
+
