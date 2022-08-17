@@ -2,7 +2,7 @@
 name: good issue
 about: for good issues
 title: ''
-labels: 'bug'
+labels: bug
 assignees: ''
 
 ---
